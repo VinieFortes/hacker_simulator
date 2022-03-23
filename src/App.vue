@@ -20,7 +20,7 @@ export default class App extends Vue{
 @font-face {
   font-family: "Decterm";
   src: local("Decterm"),
-  url(./fonts/_decterm.ttf) format("truetype");
+  url(../src/fonts/_decterm.ttf) format("truetype");
 }
 
 ::-webkit-scrollbar {
