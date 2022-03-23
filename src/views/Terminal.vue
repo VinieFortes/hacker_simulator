@@ -54,21 +54,28 @@ export default class Terminal extends Vue{
     }
   }
 
-  createText(args: string, no_padding: boolean){
+  createText(args: string, no_padding: boolean, animation_fast: boolean){
     const elPai = document.getElementById('Pai');
     const dateSpan = document.createElement('p');
-    dateSpan.id = 'text';
+    dateSpan.classList.add('text');
     dateSpan.innerHTML = args
     const style = document.createElement('style');
     style.innerHTML = '@keyframes typing {from { width: 0 }to { width: 100% }}'
-    no_padding ? dateSpan.style.cssText = `color: #00ef00; border: red solid; font-size: 20px; text-align: justify; padding: 0; margin: 0; animation: typing 5.5s steps(90, end),blink-caret .75s step-end infinite;@keyframes typing {from { width: 0 }to { width: 100% }}` : dateSpan.style.cssText = `color: #00ef00; font-size: 20px; text-align: justify; padding: 5px; overflow-wrap: break-word; animation: typing 5.5s steps(90, end),blink-caret .75s step-end infinite;@keyframes typing {from { width: 0 }to { width: 100% }}`
+    no_padding ? dateSpan.style.cssText = `color: #00ef00; font-size: 20px; text-align: justify; padding: 0; margin: 0; animation: typing 5.5s steps(90, end),blink-caret .75s step-end infinite;@keyframes typing {from { width: 0 }to { width: 100% }}` : dateSpan.style.cssText = `color: #00ef00; font-size: 20px; text-align: justify; padding: 5px; overflow-wrap: break-word; animation: typing 5.5s steps(90, end),blink-caret .75s step-end infinite;@keyframes typing {from { width: 0 }to { width: 100% }}`
+    animation_fast ? dateSpan.style.cssText = `color: #00ef00; font-size: 20px; text-align: justify; padding: 0; margin: 0; animation: typing 1.5s steps(10, end),blink-caret .75s step-end infinite;@keyframes typing {from { width: 0 }to { width: 100% }}` : dateSpan.style.cssText = `color: #00ef00; font-size: 20px; text-align: justify; padding: 5px; overflow-wrap: break-word; animation: typing 5.5s steps(90, end),blink-caret .75s step-end infinite;@keyframes typing {from { width: 0 }to { width: 100% }}`
     dateSpan.appendChild(style)
     elPai?.appendChild(dateSpan)
   }
 
   removeText(){
-    if(document.getElementById('text')){
-      document.getElementById('text')!.remove()
+    if(document.getElementsByClassName('text')){
+      const textEls = document.getElementsByClassName('text')
+      Array.from(textEls).forEach(el =>{
+        el.remove()
+      })
+    }
+    if(this.showProgressBar){
+      this.showProgressBar = false
     }
   }
 
@@ -81,7 +88,7 @@ export default class Terminal extends Vue{
         for(let i = 1; i < 200; i++){
            text += '011010 101010 1010 0101 0101'
         }
-        this.createText(text, false)
+        this.createText(text, false, false)
         this.terminal = '';
         break
 
@@ -95,7 +102,7 @@ export default class Terminal extends Vue{
         const today = new Date();
         const time = today.getHours() + "h:" + today.getMinutes() + 'min';
         const date = today.getDate()  + '-' +(today.getMonth() + 1) +  '-' + today.getFullYear();
-        this.createText(time + '  ' +date, false)
+        this.createText(time + '  ' +date, false, false)
         this.terminal = '';
         break
 
@@ -104,18 +111,22 @@ export default class Terminal extends Vue{
         this.createText("<strong>lista de comandos</strong><br>" +
             "clock -- Mostra a hora e data. <br>" +
             "clear -- Limpa o terminal. <br>" +
-            "matrix -- Mostra um monte de codigo binario aleatorio.", false)
+            "matrix -- Mostra um monte de codigo binario aleatorio. <br>" +
+            "scanIPs -- Mostra a lista de IP's na sua rede.", false, false)
         this.terminal = '';
         break
 
       case 'scanIPs':
           this.removeText()
-          this.createText(`Buscando IP's na sua rede`, false)
+          this.createText(`Buscando IP's na sua rede`, false, false)
           this.showProgressBar = true;
-          // setInterval(() => {
-          //   this.createText(`IP 1`, true)
-          // },3000);
-          this.terminal = '';
+          const myTimer = setInterval(() => {
+            this.createText(`IPv4 ${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)} ---- Ipv6 ${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}:${Math.floor(Math.random() * 10)}db${Math.floor(Math.random() * 10)}:${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}a${Math.floor(Math.random() * 10)}:0000:0000:${Math.floor(Math.random() * 10)}a${Math.floor(Math.random() * 10)}e:0${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}0:${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}`, true, true)
+          }, 1000);
+          setTimeout(()=>{
+            clearInterval(myTimer);
+          }, 30000)
+        this.terminal = '';
         break
     }
   }
@@ -186,7 +197,7 @@ export default class Terminal extends Vue{
 }
 
 .in {
-  animation: fill 10s linear 1;
+  animation: fill 30s linear 1;
   height: 100%;
   background-color: #00ef00;
 }

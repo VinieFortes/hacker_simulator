@@ -23,4 +23,20 @@ export default class App extends Vue{
   url(./fonts/_decterm.ttf) format("truetype");
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00ef00;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ef00;
+}
+
 </style>

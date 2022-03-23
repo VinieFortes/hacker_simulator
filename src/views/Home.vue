@@ -5,7 +5,7 @@
     </div>
     <div class="subs">
      <router-link to="/t"><h3 class="sub">__start</h3></router-link>
-      <h3 class="sub">__about</h3>
+     <router-link to="/about"><h3 class="sub">__about</h3></router-link>
     </div>
   </q-page>
 </template>
