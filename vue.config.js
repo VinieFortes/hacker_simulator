@@ -1,6 +1,6 @@
 module.exports = {
+  publicPath: '/hacker_simulator/',
   pluginOptions: {
-    publicPath: '/hacker_simulator/',
     quasar: {
       importStrategy: 'kebab',
       rtlSupport: false
